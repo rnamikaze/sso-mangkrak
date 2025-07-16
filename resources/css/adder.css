@@ -1,0 +1,53 @@
+.hide-scrbar {
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+}
+.hide-scrbar::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+}
+
+.Flipped,
+.Flipped .Content {
+    /* transform: rotateX(180deg); */
+}
+
+/* Designing for scroll-bar */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #ebf0f5;
+    border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #7dcf9f;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #48bb78;
+}
+
+.animateIcon {
+    animation: glow;
+    animation-duration: 1500ms;
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes glow {
+    0% {
+        filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.6));
+    }
+
+    100% {
+        filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0));
+    }
+}

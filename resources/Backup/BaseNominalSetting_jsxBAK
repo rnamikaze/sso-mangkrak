@@ -1,0 +1,354 @@
+import UniversalLoading from "@/Pages/SIK/SmallComponents/UniversalLoading";
+import { Flex, Heading, Button, Input } from "@chakra-ui/react";
+import {
+    Table,
+    Thead,
+    Tbody,
+    Tfoot,
+    Tr,
+    Th,
+    Td,
+    TableCaption,
+    TableContainer,
+    useDisclosure,
+    Text,
+} from "@chakra-ui/react";
+import {
+    faChevronLeft,
+    faMagnifyingGlass,
+    faPen,
+    faXmarkCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+} from "@chakra-ui/react";
+import SaHeader from "./Compo/SaHeader";
+
+function formatRupiah(number) {
+    // Convert number to string and split into integer and decimal parts
+    let parts = number.toString().split(".");
+    let integerPart = parts[0];
+    let decimalPart = parts.length > 1 ? parts[1] : "";
+
+    // Add thousands separator to integer part
+    let formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+    // Concatenate with currency symbol and decimal part (if exists)
+    let formattedNumber = "Rp" + formattedInteger;
+    if (decimalPart !== "") {
+        formattedNumber += "," + decimalPart;
+    }
+
+    return formattedNumber;
+}
+
+const BaseNominalSetting = ({ setCurrentView }) => {
+    const [baseData, setBaseData] = useState([]);
+    const [isLoadingData, setIsloadingData] = useState(true);
+    const [maxPageTable, setMaxPageTable] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [nominalInput, setNominalInput] = useState(0);
+    const [isSearching, setIsSearching] = useState(false);
+    const [keySearch, setKeySearch] = useState("");
+
+    const [targetEdit, setTargetEdit] = useState({
+        fullname: "Tunggu...",
+        nik: "Tunggu...",
+        id: "Tunggu...",
+        base_nominal_kpi: "Tunggu...",
+    });
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    // const renderPaginationButton = () => {
+
+    // };
+
+    const getListWithSearch = () => {
+        if (keySearch.length > 3) {
+            setIsSearching(true);
+            setIsloadingData(true);
+            setCurrentPage(1);
+
+            axios
+                .post("/sik/get-list-w-search", {
+                    page: 1,
+                    search: keySearch,
+                })
+                .then(function (response) {
+                    // // console.log(response);
+                    setBaseData(response.data.table.data);
+                    let buffArrMax = [];
+
+                    for (let i = 0; i < response.data.maxPage; i++) {
+                        buffArrMax.push(i);
+                    }
+
+                    setMaxPageTable(buffArrMax);
+
+                    setIsloadingData(false);
+                })
+                .catch(function (error) {
+                    // console.log(error);
+                });
+        }
+    };
+
+    const getListPerPage = (targetPage) => {
+        setIsloadingData(true);
+        setCurrentPage(targetPage);
+        axios
+            .post("/sik/get-list-base-nominal", {
+                page: targetPage,
+            })
+            .then(function (response) {
+                // // console.log(response);
+                setBaseData(response.data.table.data);
+                let buffArrMax = [];
+
+                for (let i = 0; i < response.data.maxPage; i++) {
+                    buffArrMax.push(i);
+                }
+
+                setMaxPageTable(buffArrMax);
+                setIsloadingData(false);
+            })
+            .catch(function (error) {
+                // console.log(error);
+            });
+    };
+
+    const updateTargetNominal = () => {
+        axios
+            .post("/sik/update-target-nominal", {
+                page: currentPage,
+                nominal: nominalInput,
+                id: targetEdit.id,
+            })
+            .then(function (response) {
+                // // console.log(response);
+                // setBaseData(response.data.table.data);
+                // setMaxPageTable(response.data.maxPage);
+                // setIsloadingData(false);
+                getListPerPage(currentPage);
+            })
+            .catch(function (error) {
+                // console.log(error);
+            });
+    };
+
+    useEffect(() => {
+        axios
+            .post("/sik/get-list-base-nominal", {
+                page: 1,
+            })
+            .then(function (response) {
+                // // console.log(response);
+                setBaseData(response.data.table.data);
+                // setMaxPageTable(response.data.maxPage);
+
+                let buffArrMax = [];
+
+                for (let i = 0; i < response.data.maxPage; i++) {
+                    buffArrMax.push(i);
+                }
+
+                setMaxPageTable(buffArrMax);
+                setIsloadingData(false);
+            })
+            .catch(function (error) {
+                // console.log(error);
+            });
+    }, []);
+    return (
+        <>
+            <Flex
+                bg={"white"}
+                width={"100%"}
+                overflowY={"auto"}
+                // border={"2px"}
+                borderRadius={"6px"}
+                px={3}
+                py={2}
+                direction={"column"}
+            >
+                {/* Sa Header */}
+                <SaHeader
+                    headTitle="Base Nominal"
+                    icon={faChevronLeft}
+                    setCurrentView={setCurrentView}
+                />
+                {isLoadingData ? (
+                    <UniversalLoading />
+                ) : (
+                    <>
+                        <Flex mb={3}>
+                            <Input
+                                value={keySearch}
+                                onChange={(e) => {
+                                    setKeySearch(e.target.value);
+                                }}
+                                placeholder="Cari..."
+                                size="md"
+                            />
+                            {isSearching ? (
+                                <Button
+                                    ml={2}
+                                    colorScheme={"orange"}
+                                    fontWeight={"bold"}
+                                    onClick={() => {
+                                        getListPerPage(1);
+                                        setIsSearching(false);
+                                        setKeySearch("");
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faXmarkCircle} />
+                                </Button>
+                            ) : (
+                                ""
+                            )}
+                            <Button
+                                ml={2}
+                                colorScheme={"blue"}
+                                fontWeight={"bold"}
+                                onClick={getListWithSearch}
+                                isDisabled={keySearch.length <= 3}
+                            >
+                                Cari &nbsp;&nbsp;
+                                <FontAwesomeIcon icon={faMagnifyingGlass} />
+                            </Button>
+                        </Flex>
+                        <TableContainer
+                            width={"100%"}
+                            overflowY={"auto"}
+                            // border={"2px"}
+                            // borderColor={"red"}
+                        >
+                            <Table variant="striped">
+                                <TableCaption>Table Data Tendik</TableCaption>
+                                <Thead>
+                                    <Tr>
+                                        <Th>Nama</Th>
+                                        <Th>NIK</Th>
+                                        <Th>Base Nominal</Th>
+                                        <Th>Aksi</Th>
+                                    </Tr>
+                                </Thead>
+                                <Tbody>
+                                    {baseData.map((row, index) => {
+                                        return (
+                                            <Tr>
+                                                <Td>{row.fullname}</Td>
+                                                <Td>{row.nik}</Td>
+                                                <Td>
+                                                    {formatRupiah(
+                                                        row.base_nominal_kpi
+                                                    )}
+                                                </Td>
+                                                <Td>
+                                                    <Button
+                                                        colorScheme={"whatsapp"}
+                                                        size={"sm"}
+                                                        onClick={() => {
+                                                            setTargetEdit(row);
+                                                            setNominalInput(
+                                                                row.base_nominal_kpi
+                                                            );
+                                                            onOpen();
+                                                        }}
+                                                    >
+                                                        <FontAwesomeIcon
+                                                            icon={faPen}
+                                                        />
+                                                    </Button>
+                                                </Td>
+                                            </Tr>
+                                        );
+                                    })}
+                                </Tbody>
+                                <Tfoot>
+                                    <Tr>
+                                        <Th>Nama</Th>
+                                        <Th>NIK</Th>
+                                        <Th>Base Nominal</Th>
+                                    </Tr>
+                                </Tfoot>
+                            </Table>
+                        </TableContainer>
+                        <Flex pt={2}>
+                            {maxPageTable.map((list, index) => {
+                                return (
+                                    <Button
+                                        size={"sm"}
+                                        mr={1}
+                                        borderRadius={"0px"}
+                                        colorScheme={
+                                            index === currentPage - 1
+                                                ? "green"
+                                                : "blackAlpha"
+                                        }
+                                        onClick={() => {
+                                            getListPerPage(list + 1);
+                                            // // console.log(list + 1);
+                                        }}
+                                    >
+                                        {list + 1}
+                                    </Button>
+                                );
+                            })}
+                        </Flex>
+                    </>
+                )}
+            </Flex>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Ubah Base Nominal</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <Text size={"md"}>{targetEdit.fullname}</Text>
+                        <Input
+                            placeholder="Masukan base nominal"
+                            value={nominalInput}
+                            onChange={(e) => {
+                                let key = e.target.value;
+
+                                let newValue = key.replace(/\D/g, "");
+                                key = newValue;
+
+                                setNominalInput(key);
+                            }}
+                        ></Input>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={onClose}>
+                            Batal
+                        </Button>
+                        <Button
+                            colorScheme={"whatsapp"}
+                            onClick={() => {
+                                updateTargetNominal();
+                                setKeySearch("");
+                                setIsSearching(false);
+                                onClose();
+                            }}
+                        >
+                            Simpan
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </>
+    );
+};
+
+export default BaseNominalSetting;

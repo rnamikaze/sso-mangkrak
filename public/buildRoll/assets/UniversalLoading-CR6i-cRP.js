@@ -1,0 +1,1 @@
+import{j as r}from"./app-B5JuA1cy.js";import{F as e}from"./flex-D7MDlKee.js";import{C as t}from"./circular-progress-CHKMyF6u.js";const o=()=>r.jsx(e,{width:"100%",height:"150px",justifyContent:"center",alignItems:"center",children:r.jsx(t,{isIndeterminate:!0,color:"green.300"})});export{o as default};

@@ -1,0 +1,38 @@
+import {
+    Table,
+    Thead,
+    Tbody,
+    Tfoot,
+    Tr,
+    Th,
+    Td,
+    TableCaption,
+    TableContainer,
+} from "@chakra-ui/react";
+
+const KinerjaTable = () => {
+    return (
+        <TableContainer whiteSpace={"wrap"} width={"100%"}>
+            <Table variant="simple" size={"sm"}>
+                <Thead>
+                    <Tr>
+                        <Th>Judul Task</Th>
+                        <Th>Assigne</Th>
+                        <Th>Due Date</Th>
+                        <Th>Progress</Th>
+                    </Tr>
+                </Thead>
+                <Tbody>
+                    <Tr>
+                        <Td>inches</Td>
+                        <Td>millimetres (mm)</Td>
+                        <Td>25.4</Td>
+                        <Td>25.4</Td>
+                    </Tr>
+                </Tbody>
+            </Table>
+        </TableContainer>
+    );
+};
+
+export default KinerjaTable;

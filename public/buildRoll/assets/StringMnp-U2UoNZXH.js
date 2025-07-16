@@ -1,0 +1,1 @@
+function u(t,n,r=!1){return(r?t+1:t).toString().padStart(n,"0")}function a(t,n=20,r=""){if(typeof t!="string")throw new Error("Input must be a string");return(t.length>n?t.substring(0,n):t)+r}export{a as g,u as p};

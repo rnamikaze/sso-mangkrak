@@ -1,0 +1,1 @@
+import{f as e,j as o,c}from"./app-B5JuA1cy.js";import{u as m}from"./tr-D1Fo9UXo.js";const i=e(({isNumeric:s,...t},r)=>{const a=m();return o.jsx(c.td,{...t,ref:r,__css:a.td,"data-is-numeric":s})});export{i as T};

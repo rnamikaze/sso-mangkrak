@@ -1,0 +1,505 @@
+import {
+    Box,
+    Flex,
+    Heading,
+    Text,
+    Grid,
+    GridItem,
+    Table,
+    Thead,
+    Tbody,
+    Tfoot,
+    Tr,
+    Th,
+    Td,
+    TableCaption,
+    TableContainer,
+    Spinner,
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+
+const Dashboard = ({ mainTheme, dataDash }) => {
+    const [jabFunName, setJabFunName] = useState();
+    const [jabFunVal, setJabFunVal] = useState();
+    const [isLoadingJabFun, setIsLoadingJabFun] = useState(true);
+
+    useEffect(() => {
+        setIsLoadingJabFun(true);
+        axios
+            .post("/sik/extra-dashboard", {
+                by: "@rnamikaze",
+            })
+            .then(function (response) {
+                // // console.log(response);
+                setJabFunName(response.data.allJabFunTitle);
+                setJabFunVal(response.data.allJabFunVal);
+                setIsLoadingJabFun(false);
+            })
+            .catch(function (error) {
+                // console.log(error);
+            });
+    }, []);
+
+    return (
+        <Flex
+            direction={"column"}
+            bg={mainTheme.boxBg}
+            // width={["100vw", "100vw", "100%", "100%"]}
+            width={"100%"}
+            overflowX={"hidden"}
+            borderRadius={"6px"}
+            pt={[3, 3, 3, 0]}
+        >
+            <Grid
+                templateColumns={[
+                    "repeat(1, 1fr)",
+                    "repeat(1, 1fr)",
+                    "repeat(2, 1fr)",
+                    "repeat(3, 1fr)",
+                ]}
+                // w={["90%", "90%", "95%", "100%"]}
+                w={"100%"}
+                gap={1}
+            >
+                <GridItem
+                    // w={["90%", "90%", "95%", "100%"]}
+                    // w={"100%"}
+                    boxSizing="border-box"
+                >
+                    <Flex
+                        direction={"column"}
+                        flexGrow={1}
+                        boxShadow={"md"}
+                        bg={mainTheme.mainBg}
+                        border={"2px"}
+                        borderColor={mainTheme.primary}
+                        borderRadius={"6px"}
+                        mx={4}
+                        my={[1, 1, 1, 4]}
+                        mr={[4, 4, 4, 1]}
+                    >
+                        <Heading
+                            textAlign={"center"}
+                            width={"100%"}
+                            as={"h3"}
+                            size={"md"}
+                            bg={mainTheme.primary}
+                            color={mainTheme.boxBg}
+                            py={2}
+                        >
+                            Jumlah Dosen
+                        </Heading>
+                        <Flex width={"100%"} flexGrow={1}>
+                            <Flex
+                                bg={"white"}
+                                my={2}
+                                mx={3}
+                                mr={1}
+                                borderRadius={"6px"}
+                                overflow={"hidden"}
+                                flexGrow={1}
+                                direction={"column"}
+                            >
+                                <Heading
+                                    textAlign={"center"}
+                                    width={"100%"}
+                                    as={"h4"}
+                                    size={"sm"}
+                                    py={2}
+                                    pb={1}
+                                    bg={mainTheme.text}
+                                    color={mainTheme.boxBg}
+                                >
+                                    Laki - Laki
+                                </Heading>
+                                <Flex
+                                    textAlign={"center"}
+                                    width={"100%"}
+                                    height={"100%"}
+                                    // bg={"red"}
+                                    fontSize={"xl"}
+                                    alignItems={"center"}
+                                    justifyContent={"center"}
+                                    fontWeight={"bold"}
+                                >
+                                    {dataDash[0]}
+                                </Flex>
+                            </Flex>
+                            <Flex
+                                bg={"white"}
+                                my={2}
+                                mx={3}
+                                borderRadius={"6px"}
+                                overflow={"hidden"}
+                                flexGrow={1}
+                                direction={"column"}
+                            >
+                                <Heading
+                                    textAlign={"center"}
+                                    width={"100%"}
+                                    as={"h4"}
+                                    size={"sm"}
+                                    py={2}
+                                    pb={1}
+                                    bg={mainTheme.text}
+                                    color={mainTheme.boxBg}
+                                >
+                                    Perempuan
+                                </Heading>
+                                <Flex
+                                    textAlign={"center"}
+                                    width={"100%"}
+                                    height={"100%"}
+                                    // bg={"red"}
+                                    fontSize={"xl"}
+                                    alignItems={"center"}
+                                    justifyContent={"center"}
+                                    fontWeight={"bold"}
+                                >
+                                    {dataDash[1]}
+                                </Flex>
+                            </Flex>
+                        </Flex>
+                    </Flex>
+                </GridItem>
+                <GridItem w={"100%"}>
+                    <Flex
+                        direction={"column"}
+                        flexGrow={1}
+                        boxShadow={"md"}
+                        bg={mainTheme.mainBg}
+                        border={"2px"}
+                        borderColor={mainTheme.primary}
+                        borderRadius={"6px"}
+                        mx={4}
+                        my={4}
+                        mr={[4, 4, 4, 1]}
+                    >
+                        <Heading
+                            textAlign={"center"}
+                            width={"100%"}
+                            as={"h3"}
+                            size={"md"}
+                            bg={mainTheme.primary}
+                            color={mainTheme.boxBg}
+                            py={2}
+                        >
+                            Jumlah Karyawan
+                        </Heading>
+                        <Flex width={"100%"} flexGrow={1}>
+                            <Flex
+                                bg={"white"}
+                                my={2}
+                                mx={3}
+                                mr={1}
+                                borderRadius={"6px"}
+                                overflow={"hidden"}
+                                flexGrow={1}
+                                direction={"column"}
+                            >
+                                <Heading
+                                    textAlign={"center"}
+                                    width={"100%"}
+                                    as={"h4"}
+                                    size={"sm"}
+                                    py={2}
+                                    pb={1}
+                                    bg={mainTheme.text}
+                                    color={mainTheme.boxBg}
+                                >
+                                    Laki - Laki
+                                </Heading>
+                                <Flex
+                                    textAlign={"center"}
+                                    width={"100%"}
+                                    height={"100%"}
+                                    // bg={"red"}
+                                    fontSize={"xl"}
+                                    alignItems={"center"}
+                                    justifyContent={"center"}
+                                    fontWeight={"bold"}
+                                >
+                                    {dataDash[2]}
+                                </Flex>
+                            </Flex>
+                            <Flex
+                                bg={"white"}
+                                my={2}
+                                mx={3}
+                                borderRadius={"6px"}
+                                overflow={"hidden"}
+                                flexGrow={1}
+                                direction={"column"}
+                            >
+                                <Heading
+                                    textAlign={"center"}
+                                    width={"100%"}
+                                    as={"h4"}
+                                    size={"sm"}
+                                    py={2}
+                                    pb={1}
+                                    bg={mainTheme.text}
+                                    color={mainTheme.boxBg}
+                                >
+                                    Perempuan
+                                </Heading>
+                                <Flex
+                                    textAlign={"center"}
+                                    width={"100%"}
+                                    height={"100%"}
+                                    // bg={"red"}
+                                    fontSize={"xl"}
+                                    alignItems={"center"}
+                                    justifyContent={"center"}
+                                    fontWeight={"bold"}
+                                >
+                                    {dataDash[3]}
+                                </Flex>
+                            </Flex>
+                        </Flex>
+                    </Flex>
+                </GridItem>
+                <GridItem w={"100%"}>
+                    <Flex
+                        direction={"column"}
+                        flexGrow={1}
+                        boxShadow={"md"}
+                        bg={mainTheme.mainBg}
+                        border={"2px"}
+                        borderColor={mainTheme.primary}
+                        borderRadius={"6px"}
+                        mx={4}
+                        my={4}
+                        // mr={1}
+                    >
+                        <Heading
+                            textAlign={"center"}
+                            width={"100%"}
+                            as={"h3"}
+                            size={"md"}
+                            bg={mainTheme.primary}
+                            color={mainTheme.boxBg}
+                            py={2}
+                        >
+                            Jumlah Serdos
+                        </Heading>
+                        <Flex width={"100%"} flexGrow={1}>
+                            <Flex
+                                bg={"white"}
+                                my={2}
+                                mx={3}
+                                mr={1}
+                                borderRadius={"6px"}
+                                overflow={"hidden"}
+                                flexGrow={1}
+                                direction={"column"}
+                            >
+                                <Heading
+                                    textAlign={"center"}
+                                    width={"100%"}
+                                    as={"h4"}
+                                    size={"sm"}
+                                    py={2}
+                                    pb={1}
+                                    bg={mainTheme.text}
+                                    color={mainTheme.boxBg}
+                                >
+                                    Sudah
+                                </Heading>
+                                <Flex
+                                    textAlign={"center"}
+                                    width={"100%"}
+                                    height={"100%"}
+                                    // bg={"red"}
+                                    fontSize={"xl"}
+                                    alignItems={"center"}
+                                    justifyContent={"center"}
+                                    fontWeight={"bold"}
+                                >
+                                    {dataDash[4]}
+                                </Flex>
+                            </Flex>
+                            <Flex
+                                bg={"white"}
+                                my={2}
+                                mx={3}
+                                borderRadius={"6px"}
+                                overflow={"hidden"}
+                                flexGrow={1}
+                                direction={"column"}
+                            >
+                                <Heading
+                                    textAlign={"center"}
+                                    width={"100%"}
+                                    as={"h4"}
+                                    size={"sm"}
+                                    py={2}
+                                    pb={1}
+                                    bg={mainTheme.text}
+                                    color={mainTheme.boxBg}
+                                >
+                                    Belum
+                                </Heading>
+                                <Flex
+                                    textAlign={"center"}
+                                    width={"100%"}
+                                    height={"100%"}
+                                    // bg={"red"}
+                                    fontSize={"xl"}
+                                    alignItems={"center"}
+                                    justifyContent={"center"}
+                                    fontWeight={"bold"}
+                                >
+                                    {dataDash[5]}
+                                </Flex>
+                            </Flex>
+                        </Flex>
+                    </Flex>
+                </GridItem>
+            </Grid>
+
+            <Grid
+                templateColumns={[
+                    "repeat(1, 1fr)",
+                    "repeat(1, 1fr)",
+                    "repeat(2, 1fr)",
+                    "repeat(2, 1fr)",
+                ]}
+                gap={1}
+            >
+                <GridItem w={"100%"}>
+                    <Flex
+                        direction={"column"}
+                        flexGrow={1}
+                        boxShadow={"md"}
+                        bg={mainTheme.boxBg}
+                        border={"2px"}
+                        borderColor={mainTheme.primary}
+                        borderRadius={"6px"}
+                        mx={4}
+                        my={4}
+                        mr={[4, 4, 4, 1]}
+                        mt={1}
+                    >
+                        <Heading
+                            textAlign={"center"}
+                            width={"100%"}
+                            as={"h3"}
+                            size={"md"}
+                            bg={mainTheme.primary}
+                            color={mainTheme.boxBg}
+                            py={2}
+                        >
+                            Jumlah Jabfung Dosen
+                        </Heading>
+                        <Flex width={"100%"} flexGrow={1}>
+                            <TableContainer width={"100%"} px={3} py={3}>
+                                <Table
+                                    size="sm"
+                                    variant={"simple"}
+                                    colorScheme={"green"}
+                                >
+                                    <Thead>
+                                        <Tr textAlign={"center"}>
+                                            <Th>#</Th>
+                                            <Th>Jumlah</Th>
+                                        </Tr>
+                                    </Thead>
+                                    <Tbody textAlign={"center"}>
+                                        {isLoadingJabFun ? (
+                                            <Tr>
+                                                <Td colSpan={2}>
+                                                    <Spinner
+                                                        color="red.500"
+                                                        size={"sm"}
+                                                    />
+                                                </Td>
+                                            </Tr>
+                                        ) : (
+                                            jabFunName.map((row, index) => {
+                                                return (
+                                                    <Tr>
+                                                        <Td>
+                                                            {row.name.toUpperCase()}
+                                                        </Td>
+                                                        <Td>
+                                                            {jabFunVal[index]}
+                                                        </Td>
+                                                    </Tr>
+                                                );
+                                            })
+                                        )}
+                                    </Tbody>
+                                </Table>
+                            </TableContainer>
+                        </Flex>
+                    </Flex>
+                </GridItem>
+
+                <GridItem w={"100%"}>
+                    <Flex
+                        direction={"column"}
+                        flexGrow={1}
+                        boxShadow={"md"}
+                        bg={mainTheme.boxBg}
+                        border={"2px"}
+                        borderColor={mainTheme.primary}
+                        borderRadius={"6px"}
+                        mx={4}
+                        my={4}
+                        mr={[4, 4, 4, 4]}
+                        mt={1}
+                    >
+                        <Heading
+                            textAlign={"center"}
+                            width={"100%"}
+                            as={"h3"}
+                            size={"md"}
+                            bg={mainTheme.primary}
+                            color={mainTheme.boxBg}
+                            py={2}
+                        >
+                            Jumlah Nilai KPI
+                        </Heading>
+                        <Flex width={"100%"} flexGrow={1}>
+                            <TableContainer width={"100%"} px={3} py={3}>
+                                <Table
+                                    size="sm"
+                                    variant={"simple"}
+                                    colorScheme={"green"}
+                                >
+                                    <Thead>
+                                        <Tr textAlign={"center"}>
+                                            <Th>#</Th>
+                                            <Th>Jumlah</Th>
+                                        </Tr>
+                                    </Thead>
+                                    <Tbody textAlign={"center"}>
+                                        <Tr>
+                                            <Td>-</Td>
+                                            <Td>-</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>-</Td>
+                                            <Td>-</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>-</Td>
+                                            <Td>-</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>-</Td>
+                                            <Td>-</Td>
+                                        </Tr>
+                                    </Tbody>
+                                </Table>
+                            </TableContainer>
+                        </Flex>
+                    </Flex>
+                </GridItem>
+            </Grid>
+        </Flex>
+    );
+};
+
+export default Dashboard;
