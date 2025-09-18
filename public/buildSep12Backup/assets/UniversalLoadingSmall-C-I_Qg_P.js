@@ -1,1 +1,0 @@
-import{j as r,S as e}from"./app-D-tiouko.js";import{F as s}from"./flex-B3u7Yjy3.js";const o=()=>r.jsxs(s,{width:"100%",justifyContent:"center",mb:2,alignItems:"center",color:"gray.600",children:["--   ",r.jsx(e,{color:"gray.600",size:"sm"}),"  --"]});export{o as default};

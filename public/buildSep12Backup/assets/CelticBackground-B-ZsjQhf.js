@@ -1,1 +1,0 @@
-import{j as t}from"./app-D-tiouko.js";import{b as o}from"./index-CVfZXKi4.js";import{F as r}from"./flex-B3u7Yjy3.js";const e=()=>t.jsx(r,{children:t.jsx(o.LazyLoadImage,{alt:"none",height:"auto",src:"https://storage.unusida.id/storage/img/celtic_icon.png",width:"50px"})});export{e as default};

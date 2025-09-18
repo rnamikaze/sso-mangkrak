@@ -1,1 +1,0 @@
-import{j as e}from"./app-BRf5toWG.js";import{B as t}from"./box-BqPd-jnX.js";const i=({emailLog:r})=>e.jsx(t,{display:"flex",alignItems:"center",justifyContent:"center",width:"100vw",height:"100vh",bgGradient:"linear(to-br, yellow.300, green.300)"});export{i as default};

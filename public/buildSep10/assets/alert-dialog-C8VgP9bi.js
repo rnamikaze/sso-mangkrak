@@ -1,1 +1,0 @@
-import{j as e,f as r}from"./app-BRf5toWG.js";import{e as s,f as i}from"./modal-overlay-BIVDhjzn.js";function f(t){const{leastDestructiveRef:o,...a}=t;return e.jsx(s,{...a,initialFocusRef:o})}const c=r((t,o)=>e.jsx(i,{ref:o,role:"alertdialog",...t}));export{f as A,c as a};

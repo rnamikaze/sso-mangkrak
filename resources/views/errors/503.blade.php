@@ -45,10 +45,10 @@
         SEDANG PERBAIKAN
     </div>
     <div class="warning" style="font-weight: normal; text-align:center">
-        Estimasi Online Kembali 14:00<br />(Cek dengan mengakses kembali secara berkala!)
+        Estimasi Online Kembali 19/09/2025 09:00<br />(Cek dengan mengakses kembali secara berkala!)
     </div>
     <div class="warning" style="margin-top: 20px; font-size: 20px; font-weight: normal; text-align:center">
-        UPT-IT UNUSIDA ][
+        Dari Developer SSO
     </div>
 </body>
 

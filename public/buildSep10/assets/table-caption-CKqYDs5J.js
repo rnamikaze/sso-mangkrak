@@ -1,1 +1,0 @@
-import{f as r,j as n,c as p}from"./app-BRf5toWG.js";import{u as c}from"./tr-D0gvPZIT.js";const i=r((t,a)=>{const{placement:s="bottom",...o}=t,e=c();return n.jsx(p.caption,{...o,ref:a,__css:{...e.caption,captionSide:s}})});i.displayName="TableCaption";export{i as T};

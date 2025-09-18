@@ -20,5 +20,7 @@ yarn-error.log
 /.vscode
 /*.zip
 /*.rar
+/*.tar.gz
 /public/*.zip
 /public/*.rar
+/public/*.tar.gz

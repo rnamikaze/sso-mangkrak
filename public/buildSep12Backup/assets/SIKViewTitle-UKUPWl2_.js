@@ -1,1 +1,0 @@
-import{j as r}from"./app-D-tiouko.js";import{F as e}from"./flex-B3u7Yjy3.js";import{T as s}from"./text-B41xTBOs.js";const x=({colorTheme:i})=>r.jsxs(e,{width:"100%",height:"60px",bg:i.primary,color:i.boxBg,children:[r.jsx(e,{children:"Sistem Kepegawaian"}),r.jsxs(e,{children:[r.jsx(s,{children:"Nama"}),r.jsx(s,{children:"Jabatan"})]})]});export{x as default};
