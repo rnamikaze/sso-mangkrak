@@ -527,3 +527,4 @@ Route::prefix('pendekin')->name('pendekin.')->middleware('auth')->group(function
 Route::get('/{link?}', function ($link) {
     return to_route('sso.dashboard');
 });
+

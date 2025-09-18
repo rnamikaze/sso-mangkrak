@@ -1,1 +1,0 @@
-import{j as r,S as e}from"./app-B5JuA1cy.js";import{F as s}from"./flex-D7MDlKee.js";const o=()=>r.jsxs(s,{width:"100%",justifyContent:"center",mb:2,alignItems:"center",color:"gray.600",children:["--   ",r.jsx(e,{color:"gray.600",size:"sm"}),"  --"]});export{o as default};

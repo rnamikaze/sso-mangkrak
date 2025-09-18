@@ -14,6 +14,16 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+// routes/web.php or routes/api.php
+Route::post('/dfiy/sync-blocked-ips', function () {
+    if (request()->bearerToken() !== env('DFIY_SYNC_SECRET_TOKEN')) {
+        abort(403, 'Unauthorized');
+    }
+
+    \Artisan::call('defread:sync-blocked');
+    return response()->json(['okay' => true]);
+});
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

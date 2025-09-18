@@ -513,14 +513,20 @@ class AccountsControllers extends Controller
             $byPassLoger = true;
         }
         // =============================
-
-        if (isNumericString($emailVar)) {
-            $findUser = User::where(['nik' => $emailVar, 'active' => 1])->first();
+	
+    	 if (isEmail($emailVar)) {
+            $findUser = User::where(['email' => $emailVar, 'active' => 1])->first();
         } else {
-            if (isEmail($emailVar)) {
-                $findUser = User::where(['email' => $emailVar, 'active' => 1])->first();
-            }
+            $findUser = User::where(['nik' => $emailVar, 'active' => 1])->first();
         }
+    
+        // if (isNumericString($emailVar)) {
+        //     $findUser = User::where(['nik' => $emailVar, 'active' => 1])->first();
+        // } else {
+        //     if (isEmail($emailVar)) {
+        //         $findUser = User::where(['email' => $emailVar, 'active' => 1])->first();
+        //     }
+        // }
 
         // OSC Report-In
         $oscExtLogToken = env("OSC_EXT_LOG_TOKEN");
@@ -821,8 +827,54 @@ class AccountsControllers extends Controller
             'device'        => $agent->device(),
             'is_mobile'     => $agent->isMobile(),
         ];
+		
+    if (isEmail($emailVar)) {
+            if (Auth::attempt(['email' => $emailVar, 'password' => $credentials['password'], 'active' => 1], $remember)) {
+                $req->session()->regenerate();
 
-        if (isNumericString($emailVar)) {
+                if ($LOGER === true) {
+                    if ($specialByPass === false) {
+                        $newLoger = new LoginLoger;
+
+                        $newLoger->master_id = Auth::id();
+                        $newLoger->action = "Login - " . $emailVar;
+                        $newLoger->ip_log = strval($ipAddress);
+                        $newLoger->user_agent = strval($userAgent);
+                        $newLoger->device_name = $deviceType;
+                        $newLoger->browser_name = $browser;
+                        $newLoger->save();
+                    }
+                }
+
+                $user = Auth::user();
+
+                // Revoke all tokens issued to the user
+                $tokens = $user->tokens;
+
+                foreach ($tokens as $token) {
+                    $token->revoke();
+
+                    // Also delete refresh tokens associated with this access token
+                    RefreshToken::where('access_token_id', $token->id)->delete();
+
+                    // Delete the token
+                    $token->delete();
+                }
+
+                $response = Http::withToken($oscExtLogToken)
+                    ->post($oscBase . '/api/log/report-in', [
+                        "what" => "Auth Success at " . $appIdentifier . " Login [Email][$emailVar/$user->name]",
+                        "ip" => $req->ip(),
+                        "extra" => json_encode($extraPayload)
+                    ]);
+
+                // return redirect()->route('sso.dashboard');
+                return response()->json([
+                    "success" => true,
+                    "is_dev" => false
+                ]);
+            }
+        } else {
             if (Auth::attempt(['nik' => $emailVar, 'password' => $credentials['password'], 'active' => 1], $remember)) {
 
                 $req->session()->regenerate();
@@ -886,55 +938,122 @@ class AccountsControllers extends Controller
                     "is_dev" => false
                 ]);
             }
-        } else {
-            if (isEmail($emailVar)) {
-                if (Auth::attempt(['email' => $emailVar, 'password' => $credentials['password'], 'active' => 1], $remember)) {
-                    $req->session()->regenerate();
-
-                    if ($LOGER === true) {
-                        if ($specialByPass === false) {
-                            $newLoger = new LoginLoger;
-
-                            $newLoger->master_id = Auth::id();
-                            $newLoger->action = "Login - " . $emailVar;
-                            $newLoger->ip_log = strval($ipAddress);
-                            $newLoger->user_agent = strval($userAgent);
-                            $newLoger->device_name = $deviceType;
-                            $newLoger->browser_name = $browser;
-                            $newLoger->save();
-                        }
-                    }
-
-                    $user = Auth::user();
-
-                    // Revoke all tokens issued to the user
-                    $tokens = $user->tokens;
-
-                    foreach ($tokens as $token) {
-                        $token->revoke();
-
-                        // Also delete refresh tokens associated with this access token
-                        RefreshToken::where('access_token_id', $token->id)->delete();
-
-                        // Delete the token
-                        $token->delete();
-                    }
-
-                    $response = Http::withToken($oscExtLogToken)
-                        ->post($oscBase . '/api/log/report-in', [
-                            "what" => "Auth Success at " . $appIdentifier . " Login [Email][$emailVar/$user->name]",
-                            "ip" => $req->ip(),
-                            "extra" => json_encode($extraPayload)
-                        ]);
-
-                    // return redirect()->route('sso.dashboard');
-                    return response()->json([
-                        "success" => true,
-                        "is_dev" => false
-                    ]);
-                }
-            }
         }
+    
+//         if (isNumericString($emailVar)) {
+//             if (Auth::attempt(['nik' => $emailVar, 'password' => $credentials['password'], 'active' => 1], $remember)) {
+
+//                 $req->session()->regenerate();
+
+//                 if ($LOGER === true && env('APP_ENV', 'local') === "production") {
+//                     if ($specialByPass === false) {
+//                         $newLoger = new LoginLoger;
+
+//                         $newLoger->master_id = Auth::id();
+//                         $newLoger->action = "Login - " . $emailVar;
+//                         $newLoger->ip_log = strval($ipAddress);
+//                         $newLoger->user_agent = strval($userAgent);
+//                         $newLoger->device_name = $deviceType;
+//                         $newLoger->browser_name = $browser;
+//                         $newLoger->save();
+//                     }
+//                 }
+
+//                 $user = Auth::user();
+
+//                 // Revoke all tokens issued to the user
+//                 $tokens = $user->tokens;
+
+//                 foreach ($tokens as $token) {
+//                     $token->revoke();
+
+//                     // Also delete refresh tokens associated with this access token
+//                     RefreshToken::where('access_token_id', $token->id)->delete();
+
+//                     // Delete the token
+//                     $token->delete();
+//                 }
+
+//                 // If account is Developer account
+//                 // Redirect to Master Multi Account
+//                 if ($emailVar === "3515132411980001") {
+//                     // return to_route('dev.parked');
+//                     $response = Http::withToken($oscExtLogToken)
+//                         ->post($oscBase . '/api/log/report-in', [
+//                             "what" => "Auth Success at " . $appIdentifier . " Login [Developer Account]",
+//                             "ip" => $req->ip(),
+//                             "extra" => json_encode($extraPayload)
+//                         ]);
+
+//                     return response()->json([
+//                         "success" => true,
+//                         "is_dev" => true
+//                     ]);
+//                 }
+
+//                 $response = Http::withToken($oscExtLogToken)
+//                     ->post($oscBase . '/api/log/report-in', [
+//                         "what" => "Auth Success at " . $appIdentifier . " Login [UniqueID][$emailVar/$user->name]",
+//                         "ip" => $req->ip(),
+//                         "extra" => json_encode($extraPayload)
+//                     ]);
+
+//                 // return redirect()->route('sso.dashboard');
+//                 return response()->json([
+//                     "success" => true,
+//                     "is_dev" => false
+//                 ]);
+//             }
+//         } else {
+//             if (isEmail($emailVar)) {
+//                 if (Auth::attempt(['email' => $emailVar, 'password' => $credentials['password'], 'active' => 1], $remember)) {
+//                     $req->session()->regenerate();
+
+//                     if ($LOGER === true) {
+//                         if ($specialByPass === false) {
+//                             $newLoger = new LoginLoger;
+
+//                             $newLoger->master_id = Auth::id();
+//                             $newLoger->action = "Login - " . $emailVar;
+//                             $newLoger->ip_log = strval($ipAddress);
+//                             $newLoger->user_agent = strval($userAgent);
+//                             $newLoger->device_name = $deviceType;
+//                             $newLoger->browser_name = $browser;
+//                             $newLoger->save();
+//                         }
+//                     }
+
+//                     $user = Auth::user();
+
+//                     // Revoke all tokens issued to the user
+//                     $tokens = $user->tokens;
+
+//                     foreach ($tokens as $token) {
+//                         $token->revoke();
+
+//                         // Also delete refresh tokens associated with this access token
+//                         RefreshToken::where('access_token_id', $token->id)->delete();
+
+//                         // Delete the token
+//                         $token->delete();
+//                     }
+
+//                     $response = Http::withToken($oscExtLogToken)
+//                         ->post($oscBase . '/api/log/report-in', [
+//                             "what" => "Auth Success at " . $appIdentifier . " Login [Email][$emailVar/$user->name]",
+//                             "ip" => $req->ip(),
+//                             "extra" => json_encode($extraPayload)
+//                         ]);
+
+//                     // return redirect()->route('sso.dashboard');
+//                     return response()->json([
+//                         "success" => true,
+//                         "is_dev" => false
+//                     ]);
+//                 }
+//             }
+//         }
+    
         $findUser = null;
 
         if (isNumericString($emailVar)) {
@@ -961,7 +1080,8 @@ class AccountsControllers extends Controller
         return response()->json([
             "success" => false,
             "reason" => "account not found",
-            "is_dev" => false
+            "is_dev" => false,
+        // "debug"=>Hash::make('ST07082001012')
         ]);
     }
 

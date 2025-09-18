@@ -1,0 +1,1 @@
+import{j as e}from"./app-BRf5toWG.js";import{F as i}from"./flex-DKwlgr-O.js";const s=({mainTheme:o=null,assignerColor:r})=>e.jsx(i,{borderRadius:"50%",border:"2px",borderColor:"white",width:"15px",height:"15px",minWidth:"15px",minHeight:"15px",bg:r,mr:"1"});export{s as default};

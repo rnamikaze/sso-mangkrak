@@ -380,7 +380,7 @@ class KpiMainControllers extends Controller
             // Validation work onli here
             $getTask = SikKinerjaTask::where('assigned_biodata_id', $targetBiodataId)
                 ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
-                ->where('is_validated', true)
+                // ->where('is_validated', true)
                 ->get();
         }
 

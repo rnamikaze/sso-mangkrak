@@ -1,1 +1,0 @@
-import{r as t}from"./app-B5JuA1cy.js";const s=()=>{const r=e=>e<=768?0:e<=1024?1:2,[n,i]=t.useState(r(window.innerWidth));return t.useEffect(()=>{const e=()=>{i(r(window.innerWidth))};return window.addEventListener("resize",e),()=>{window.removeEventListener("resize",e)}},[]),n};export{s as useBreakpoint};

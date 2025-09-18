@@ -5,78 +5,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sedang Perbaikan!</title>
+    <title>503 | Sedang Perbaikan</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mozilla+Headline:wght@200..700&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            font-family: 'Protest Strike', sans-serif;
-            box-sizing: border-box;
-            font-size: 90%;
-        }
-
         body {
-            /* width: 100vw; */
-            height: 100vh;
-            box-sizing: border-box;
-            background: #EEF296;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            background: #000;
+            width: "100vw";
+            min-height: "100vh";
+            display: "flex";
+            justify-content: "center";
+            align-items: "center";
+            color: "white";
         }
 
-        h1,
-        h2 {
-            color: #508D69
+        .mozilla-headline-regular {
+            font-family: "Mozilla Headline", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+            font-variation-settings:
+                "wdth" 100;
         }
 
-        h1 {
-            font-size: 6em;
-            line-height: 0em;
-            /* border: 1px solid black; */
-        }
-
-        h2 {
-            font-size: 2em;
-            /* line-height: 0em; */
-        }
-
-        main {
-            width: 300px;
-            height: max-content;
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            justify-content: center;
-            /* border: 1px solid black; */
-            filter: drop-shadow(3px 3px 0px #496a3a4d);
-        }
-
-        button {
-            padding: 10px 20px;
-            border-radius: 6px;
-            color: #EEF296;
-            font-size: 1.3em;
-            margin-top: 20px;
-            border: 0px;
-            background: #508D69;
-            cursor: pointer;
+        .warning {
+            font-size: "20px !important";
         }
     </style>
 </head>
 
-<body>
-    <div>
-        <h1>503</h1>
-        <h2>Sedang Perbaikan, tunggu ya...</h2>
-        {{-- <a href="/"><button>Beranda</button></a> --}}
+<body class="mozilla-headline-regular"
+    style="color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; flex-direction: column; padding: 20px 10px">
+    <div class="warning" style="font-weight: bold; font-size: 40px; margin-bottom: 20px">
+        503 !<br />
+        Website Offline
+    </div>
+    <div class="warning" style="font-weight: bold; margin-bottom: 10px">
+        SEDANG PERBAIKAN
+    </div>
+    <div class="warning" style="font-weight: normal; text-align:center">
+        Estimasi Online Kembali 14:00<br />(Cek dengan mengakses kembali secara berkala!)
+    </div>
+    <div class="warning" style="margin-top: 20px; font-size: 20px; font-weight: normal; text-align:center">
+        UPT-IT UNUSIDA ][
     </div>
 </body>
 

@@ -1,1 +1,0 @@
-import{c as e}from"./app-B5JuA1cy.js";const r=e("div",{baseStyle:{fontSize:"0.24em",top:"50%",left:"50%",width:"100%",textAlign:"center",position:"absolute",transform:"translate(-50%, -50%)"}});r.displayName="CircularProgressLabel";export{r as C};
